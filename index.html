@@ -254,8 +254,15 @@
     </div>
 
     <script>
+        // Helper function to capitalize the first letter of each word
+        function toTitleCase(str) {
+            return str.replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
+
         // --- DATA: Stretches (Video-First with Verified Checkmarks) ---
-        const stretches = [
+        const rawStretches = [
             // Hips
             { name: "Pigeon Pose", videoIds: ["M9VNeCErXq8"], routineTypes: ["Day to day", "High Kicks", "Martial Arts", "Full Body", "Deep Flexibility"], multiPart: true, parts: [{ label: "Left Leg", start: 3 }, { label: "Right Leg", start: 30 }], difficulty: "Intermediate" },
             { name: "Frog Stretch", videoIds: ["0CH1NVeNJbw"], start: 11, routineTypes: ["Day to day", "High Kicks", "Martial Arts", "Deep Flexibility"], difficulty: "Advanced" },
@@ -311,60 +318,74 @@
             { name: "Bulgarian Split Squat", videoIds: ["Brh1SHAkknI"], start: 4, routineTypes: ["High Kicks", "Running", "Martial Arts", "Deep Flexibility"], difficulty: "Advanced" },
 
             // --- New Martial Arts Stretches (with placeholder videos) ---
-            { name: "Dynamic Leg Swings (Front/Back)", videoIds: ["placeholder_MA_1"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Deep Flexibility"], difficulty: "Intermediate" },
-            { name: "Dynamic Leg Swings (Side)", videoIds: ["placeholder_MA_2"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Deep Flexibility"], difficulty: "Intermediate" },
-            { name: "Spine Mobility (Rolling)", videoIds: ["placeholder_MA_3"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Morning Wake-Up", "Evening Wind-Down"], difficulty: "Beginner" },
-            { name: "Wrist Rotations", videoIds: ["placeholder_MA_4"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Ankle Rotations", videoIds: ["placeholder_MA_5"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Morning Wake-Up", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Groin Stretch (Standing)", videoIds: ["placeholder_MA_6"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Deep Flexibility"], difficulty: "Intermediate" },
-            { name: "Knee To Chest (Standing)", videoIds: ["placeholder_MA_7"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Morning Wake-Up", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Quad Pull (Standing)", videoIds: ["placeholder_MA_8"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Post-Workout"], difficulty: "Beginner" },
-            { name: "Hamstring Sweep", videoIds: ["placeholder_MA_9"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Deep Flexibility"], difficulty: "Intermediate" },
-            { name: "Shoulder Rotations (Dynamic)", videoIds: ["placeholder_MA_10"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Morning Wake-Up", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Trunk Twists (Standing)", videoIds: ["placeholder_MA_11"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Morning Wake-Up", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Side Bends (Standing)", videoIds: ["placeholder_MA_12"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Hip Circles (Standing)", videoIds: ["placeholder_MA_13"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Morning Wake-Up"], difficulty: "Beginner" },
-            { name: "Leg Cradle", videoIds: ["placeholder_MA_14"], start: 0, routineTypes: ["Unsupported", "Martial Arts"], difficulty: "Intermediate" },
-            { name: "Deep Lunge With Twist", videoIds: ["placeholder_MA_15"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Deep Flexibility"], difficulty: "Intermediate" },
-            { name: "Knuckle Pushups (Wrist Stretch)", videoIds: ["placeholder_MA_16"], start: 0, routineTypes: ["Unsupported", "Martial Arts"], difficulty: "Advanced" },
-            { name: "Bridge (Yoga/Capoeira)", videoIds: ["placeholder_MA_17"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Deep Flexibility"], difficulty: "Advanced" },
-            { name: "Straddle Stretch (Dynamic)", videoIds: ["placeholder_MA_18"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Deep Flexibility"], difficulty: "Advanced" },
-            { name: "Wrist Flexor Stretch", videoIds: ["placeholder_MA_19"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Wrist Extensor Stretch", videoIds: ["placeholder_MA_20"], start: 0, routineTypes: ["Unsupported", "Martial Arts", "Desk Stretch"], difficulty: "Beginner" },
+            { name: "Dynamic Leg Swings (Front/Back)", videoIds: ["placeholder_MA_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Dynamic Leg Swings (Side)", videoIds: ["placeholder_MA_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Spine Mobility (Rolling)", videoIds: ["placeholder_MA_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Wrist Rotations", videoIds: ["placeholder_MA_4"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Groin Stretch (Standing)", videoIds: ["placeholder_MA_6"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Knee To Chest (Standing)", videoIds: ["placeholder_MA_7"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Quad Pull (Standing)", videoIds: ["placeholder_MA_8"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Hamstring Sweep", videoIds: ["placeholder_MA_9"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Shoulder Rotations (Dynamic)", videoIds: ["placeholder_MA_10"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Trunk Twists (Standing)", videoIds: ["placeholder_MA_11"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Side Bends (Standing)", videoIds: ["placeholder_MA_12"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Hip Circles (Standing)", videoIds: ["placeholder_MA_13"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Leg Cradle", videoIds: ["placeholder_MA_14"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Deep Lunge With Twist", videoIds: ["placeholder_MA_15"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Knuckle Pushups (Wrist Stretch)", videoIds: ["placeholder_MA_16"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Bridge (Yoga/Capoeira)", videoIds: ["placeholder_MA_17"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Straddle Stretch (Dynamic)", videoIds: ["placeholder_MA_18"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Wrist Flexor Stretch", videoIds: ["placeholder_MA_19"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Wrist Extensor Stretch", videoIds: ["placeholder_MA_20"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
 
             // --- New Placeholder Stretches for New Routines ---
             // Full Body (ensure 10 total with existing)
-            { name: "Standing Side Bend", videoIds: ["placeholder_FB_1"], start: 0, routineTypes: ["Unsupported", "Full Body", "Morning Wake-Up", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Overhead Reach", videoIds: ["placeholder_FB_2"], start: 0, routineTypes: ["Unsupported", "Full Body", "Morning Wake-Up", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Torso Twist (Seated)", videoIds: ["placeholder_FB_3"], start: 0, routineTypes: ["Unsupported", "Full Body", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Wall Chest Stretch", videoIds: ["placeholder_FB_4"], start: 0, routineTypes: ["Unsupported", "Full Body", "Desk Stretch"], difficulty: "Intermediate" },
+            { name: "Standing Side Bend", videoIds: ["placeholder_FB_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Overhead Reach", videoIds: ["placeholder_FB_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Torso Twist (Seated)", videoIds: ["placeholder_FB_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Wall Chest Stretch", videoIds: ["placeholder_FB_4"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
 
             // Morning Wake-Up (ensure 10 total with existing)
-            { name: "Good Morning Stretch", videoIds: ["placeholder_MWU_1"], start: 0, routineTypes: ["Unsupported", "Morning Wake-Up", "Full Body"], difficulty: "Beginner" },
-            { name: "Arm And Leg Raises (Supine)", videoIds: ["placeholder_MWU_2"], start: 0, routineTypes: ["Unsupported", "Morning Wake-Up", "Full Body"], difficulty: "Beginner" },
-            { name: "Gentle Spinal Twist (Lying)", videoIds: ["placeholder_MWU_3"], start: 0, routineTypes: ["Unsupported", "Morning Wake-Up", "Evening Wind-Down"], difficulty: "Beginner" },
+            { name: "Good Morning Stretch", videoIds: ["placeholder_MWU_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Arm And Leg Raises (Supine)", videoIds: ["placeholder_MWU_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Gentle Spinal Twist (Lying)", videoIds: ["placeholder_MWU_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
 
             // Evening Wind-Down (ensure 10 total with existing)
-            { name: "Legs Up The Wall", videoIds: ["placeholder_EWD_1"], start: 0, routineTypes: ["Unsupported", "Evening Wind-Down", "Full Body"], difficulty: "Beginner" },
-            { name: "Supine Spinal Twist", videoIds: ["placeholder_EWD_2"], start: 0, routineTypes: ["Unsupported", "Evening Wind-Down", "Full Body"], difficulty: "Intermediate" },
-            { name: "Reclined Bound Angle Pose", videoIds: ["placeholder_EWD_3"], start: 0, routineTypes: ["Unsupported", "Evening Wind-Down", "Deep Flexibility"], difficulty: "Beginner" },
+            { name: "Legs Up The Wall", videoIds: ["placeholder_EWD_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Supine Spinal Twist", videoIds: ["placeholder_EWD_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Reclined Bound Angle Pose", videoIds: ["placeholder_EWD_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
 
             // Desk Stretch (ensure 10 total with existing)
-            { name: "Wrist And Finger Stretches", videoIds: ["placeholder_DS_1"], start: 0, routineTypes: ["Unsupported", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Shoulder Blade Squeeze", videoIds: ["placeholder_DS_2"], start: 0, routineTypes: ["Unsupported", "Desk Stretch"], difficulty: "Beginner" },
-            { name: "Seated Glute Stretch", videoIds: ["placeholder_DS_3"], start: 0, routineTypes: ["Unsupported", "Desk Stretch"], difficulty: "Intermediate" },
+            { name: "Wrist And Finger Stretches", videoIds: ["placeholder_DS_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Shoulder Blade Squeeze", videoIds: ["placeholder_DS_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Seated Glute Stretch", videoIds: ["placeholder_DS_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
 
             // Deep Flexibility (ensure 10 total with existing)
-            { name: "Side Split Progression", videoIds: ["placeholder_DF_1"], start: 0, routineTypes: ["Unsupported", "Deep Flexibility", "Martial Arts"], difficulty: "Advanced" },
-            { name: "Front Split Progression", videoIds: ["placeholder_DF_2"], start: 0, routineTypes: ["Unsupported", "Deep Flexibility", "Martial Arts"], difficulty: "Advanced" },
-            { name: "Bridge Pose Progression", videoIds: ["placeholder_DF_3"], start: 0, routineTypes: ["Unsupported", "Deep Flexibility"], difficulty: "Advanced" },
+            { name: "Side Split Progression", videoIds: ["placeholder_DF_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Front Split Progression", videoIds: ["placeholder_DF_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Bridge Pose Progression", videoIds: ["placeholder_DF_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
 
             // Post-Workout (ensure 10 total with existing)
-            { name: "Quad Foam Roll", videoIds: ["placeholder_PW_1"], start: 0, routineTypes: ["Unsupported", "Post-Workout"], difficulty: "Intermediate" },
-            { name: "Hamstring Foam Roll", videoIds: ["placeholder_PW_2"], start: 0, routineTypes: ["Unsupported", "Post-Workout"], difficulty: "Intermediate" },
-            { name: "It Band Stretch", videoIds: ["placeholder_PW_3"], start: 0, routineTypes: ["Unsupported", "Post-Workout"], difficulty: "Intermediate" },
+            { name: "Quad Foam Roll", videoIds: ["placeholder_PW_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Hamstring Foam Roll", videoIds: ["placeholder_PW_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "It Band Stretch", videoIds: ["placeholder_PW_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
         ];
-        
+
+        // Process rawStretches to apply naming convention and move placeholder videos to "Unsupported" only
+        const stretches = rawStretches.map(stretch => {
+            const newStretch = { ...stretch };
+            // Check if any video ID starts with "placeholder_"
+            const isPlaceholderVideo = newStretch.videoIds.some(id => id.startsWith("placeholder_"));
+
+            if (isPlaceholderVideo) {
+                // If it's a placeholder, its routineTypes should ONLY be "Unsupported"
+                newStretch.routineTypes = ["Unsupported"];
+            }
+            // Apply title case to the name
+            newStretch.name = toTitleCase(newStretch.name);
+            return newStretch;
+        });
+
         // --- DOM Elements ---
         const welcomeScreen = document.getElementById('welcome-screen');
         const welcomePage1 = document.getElementById('welcome-page-1');
