@@ -175,60 +175,57 @@
         // --- DATA: Stretches (Video-First with Verified Checkmarks) ---
         const stretches = [
             // Hips
-            { name: "Pigeon Pose", videoIds: ["M9VNeCErXq8"], routineTypes: ["Day to day", "High Kicks"], verified: true, multiPart: true, parts: [{ label: "Left Leg", start: 3 }, { label: "Right Leg", start: 30 }] }, // Modified to multi-part
-            { name: "Frog Stretch", videoIds: ["0CH1NVeNJbw"], start: 11, routineTypes: ["Day to day", "High Kicks"], verified: true }, // Video added, verified
+            { name: "Pigeon Pose", videoIds: ["M9VNeCErXq8"], routineTypes: ["Day to day", "High Kicks"], verified: true, multiPart: true, parts: [{ label: "Left Leg", start: 3 }, { label: "Right Leg", start: 30 }] },
+            { name: "Frog Stretch", videoIds: ["0CH1NVeNJbw"], start: 11, routineTypes: ["Day to day", "High Kicks"], verified: true },
             { name: "Butterfly Stretch", videoIds: ["N-xrg7jYVW0"], start: 4, routineTypes: ["Day to day", "High Kicks"], verified: true },
-            { name: "Seated Straddle", videoIds: ["HZRZ18fDleg"], start: 4, routineTypes: ["Day to day", "High Kicks"], verified: true }, // Video added, verified
+            { name: "Seated Straddle", videoIds: ["HZRZ18fDleg"], start: 4, routineTypes: ["Day to day", "High Kicks"], verified: true },
             { name: "Kneeling Hip Flexor Stretch", videoIds: ["3wthmvKWoOU"], start: 2, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
-            { name: "Lying Hip Rotations", videoIds: ["y9Ea-Y2mXAU"], start: 4, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "90/90 Stretch", videoIds: ["F1XdXdCjERk"], start: 3, routineTypes: ["Day to day", "High Kicks"], verified: true }, // Video added, verified
-            { name: "Standing Figure-Four", videoIds: [], routineTypes: ["Day to day", "High Kicks"] }, // Video removed
-            { name: "Cossack Squat", videoIds: ["fyAl4o1BGVo"], start: 120, routineTypes: ["Day to day", "High Kicks"], verified: true }, // Video changed, verified
-            { name: "Deep Squat Hold", videoIds: ["iQaw0pj6cEQ"], start: 0, routineTypes: ["Day to day", "High Kicks"], verified: true }, // Video added, verified
-            { name: "Fire Log Pose", videoIds: ["WYTm1kDeCqc"], start: 0, routineTypes: ["Day to day", "High Kicks"], verified: true }, // Video added, verified
-            { name: "Happy Baby Pose", videoIds: ["z-BjiGQZe4s"], start: 2, routineTypes: ["Day to day"], verified: true }, // Added video, verified
+            { name: "Lying Hip Rotations", videoIds: ["y9Ea-Y2mXAU"], start: 4, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "90/90 Stretch", videoIds: ["F1XdXdCjERk"], start: 3, routineTypes: ["Day to day", "High Kicks"], verified: true },
+            { name: "Cossack Squat", videoIds: ["fyAl4o1BGVo"], start: 120, routineTypes: ["Day to day", "High Kicks"], verified: true },
+            { name: "Deep Squat Hold", videoIds: ["iQaw0pj6cEQ"], start: 0, routineTypes: ["Day to day", "High Kicks"], verified: true },
+            { name: "Fire Log Pose", videoIds: ["WYTm1kDeCqc"], start: 0, routineTypes: ["Day to day", "High Kicks"], verified: true },
+            { name: "Happy Baby Pose", videoIds: ["z-BjiGQZe4s"], start: 2, routineTypes: ["Day to day"], verified: true },
             
             // Ankles
-            { name: "Ankle Circles", videoIds: ["om1IAdzpKsg"], start: 7, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Heel/Toe Walks", videoIds: ["eghMLTn8tDc"], start: 7, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Kneeling Ankle Stretch", videoIds: ["2cuYI6s3Qlo"], start: 9, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Standing Calf Stretch", videoIds: ["1qlN5EXFUNo"], start: 0, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Soleus Stretch", videoIds: ["RCjNN6JfSmE"], start: 5, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Ankle Dorsiflexion Stretch", videoIds: [], routineTypes: ["Day to day", "Running"] }, // No verified videos
-            { name: "Ankle Inversion/Eversion", videoIds: ["yrCiwKBGUvg"], start: 0, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Lunging Ankle Stretch", videoIds: ["nAZcYWW8QFo"], start: 3, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Alphabet Ankles", videoIds: ["YTVZUMuEKPA"], start: 6, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Seated Ankle Stretch", videoIds: ["sYAGbGEQMGE"], start: 5, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
+            { name: "Ankle Circles", videoIds: ["om1IAdzpKsg"], start: 7, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Heel/Toe Walks", videoIds: ["eghMLTn8tDc"], start: 7, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Kneeling Ankle Stretch", videoIds: ["2cuYI6s3Qlo"], start: 9, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Standing Calf Stretch", videoIds: ["1qlN5EXFUNo"], start: 0, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Soleus Stretch", videoIds: ["RCjNN6JfSmE"], start: 5, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Ankle Inversion/Eversion", videoIds: ["yrCiwKBGUvg"], start: 0, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Lunging Ankle Stretch", videoIds: ["nAZcYWW8QFo"], start: 3, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Alphabet Ankles", videoIds: ["YTVZUMuEKPA"], start: 6, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Seated Ankle Stretch", videoIds: ["sYAGbGEQMGE"], start: 5, routineTypes: ["Day to day", "Running"], verified: true },
 
             // Shoulders
             { name: "Arm Circles", videoIds: ["Lha66p0ZXUc"], routineTypes: ["Day to day"], verified: true },
-            { name: "Cross-Body Arm Stretch", videoIds: ["2quJjVCT7AY"], start: 17, routineTypes: ["Day to day"], verified: true }, // Added video, verified
-            { name: "Overhead Triceps Stretch", videoIds: ["NQzLqpHLyuI"], start: 2, routineTypes: ["Day to day"], verified: true }, // Added video, verified
-            { name: "Doorway Chest Stretch", videoIds: ["NS64IgKUyeY"], start: 3, routineTypes: ["Day to day"], verified: true }, // Added video, verified
-            { name: "Thread the Needle", videoIds: ["2CGqyWvxP-g"], start: 0, routineTypes: ["Day to day"], verified: true }, // Added video, verified
+            { name: "Cross-Body Arm Stretch", videoIds: ["2quJjVCT7AY"], start: 17, routineTypes: ["Day to day"], verified: true },
+            { name: "Overhead Triceps Stretch", videoIds: ["NQzLqpHLyuI"], start: 2, routineTypes: ["Day to day"], verified: true },
+            { name: "Doorway Chest Stretch", videoIds: ["NS64IgKUyeY"], start: 3, routineTypes: ["Day to day"], verified: true },
+            { name: "Thread the Needle", videoIds: ["2CGqyWvxP-g"], start: 0, routineTypes: ["Day to day"], verified: true },
 
             // Neck
-            { name: "Neck Tilts", videoIds: ["0jzWXtnipPY"], start: 0, routineTypes: ["Day to day"], verified: true }, // Added video, verified
-            { name: "Neck Rotations", videoIds: [], routineTypes: ["Day to day"] }, // No verified videos
-            { name: "Chin Tucks", videoIds: ["7rnlAVhAK-8"], start: 5, routineTypes: ["Day to day"], verified: true }, // Added video, verified
-            { name: "Ear to Shoulder Stretch", videoIds: ["UbhOswck_yQ"], start: 30, routineTypes: ["Day to day"], verified: true }, // Added video, verified
+            { name: "Neck Tilts", videoIds: ["0jzWXtnipPY"], start: 0, routineTypes: ["Day to day"], verified: true },
+            { name: "Chin Tucks", videoIds: ["7rnlAVhAK-8"], start: 5, routineTypes: ["Day to day"], verified: true },
+            { name: "Ear to Shoulder Stretch", videoIds: ["UbhOswck_yQ"], start: 30, routineTypes: ["Day to day"], verified: true },
 
             // Back
-            { name: "Cat-Cow Pose", videoIds: ["w_UKcI1Ftn8"], start: 0, routineTypes: ["Day to day"], verified: true }, // Renamed, added video, verified
-            { name: "Child's Pose", videoIds: ["DMwRPGMPB10"], start: 0, routineTypes: ["Day to day"], verified: true }, // Added video, verified
-            { name: "Spinal Twist (Seated)", videoIds: ["4YlCtaTdtgA"], start: 0, routineTypes: ["Day to day"], verified: true }, // Added video, verified
+            { name: "Cat-Cow Pose", videoIds: ["w_UKcI1Ftn8"], start: 0, routineTypes: ["Day to day"], verified: true },
+            { name: "Child's Pose", videoIds: ["DMwRPGMPB10"], start: 0, routineTypes: ["Day to day"], verified: true },
+            { name: "Spinal Twist (Seated)", videoIds: ["4YlCtaTdtgA"], start: 0, routineTypes: ["Day to day"], verified: true },
             { name: "Supermans", videoIds: ["pGeaBXLwDtw"], start: 3, routineTypes: ["Day to day"], verified: true },
-            { name: "Cobra Stretch", videoIds: ["9Z7IO95Np2g"], start: 0, routineTypes: ["Day to day"], verified: true }, // Added video, verified
+            { name: "Cobra Stretch", videoIds: ["9Z7IO95Np2g"], start: 0, routineTypes: ["Day to day"], verified: true },
             { name: "SEATED ABS CIRCLES", videoIds: ["GflQ_ymx9Nw"], start: 3, routineTypes: ["Day to day"], verified: true },
 
             // Legs
-            { name: "Standing Hamstring Stretch", videoIds: ["fsZebJN-gqk"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true }, // Video added, verified
+            { name: "Standing Hamstring Stretch", videoIds: ["fsZebJN-gqk"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
             { name: "EASY KNEELING HAMSTRING STRETCH", videoIds: ["TxuyL_xwFIE"], start: 4, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "SITTING HAMSTRING STRETCH", videoIds: ["TfMyFKmTpvg"], start: 2, routineTypes: ["Day to day", "Running"], verified: true }, // Updated video, verified
-            { name: "Quad Stretch (Standing)", videoIds: ["UTA-6h17Zdo"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true }, // Video added, verified
+            { name: "SITTING HAMSTRING STRETCH", videoIds: ["TfMyFKmTpvg"], start: 2, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Quad Stretch (Standing)", videoIds: ["UTA-6h17Zdo"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
             { name: "Glute Bridge", videoId: "8bbE64NuDTU", start: 86, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
-            { name: "Forward Fold", videoIds: ["MKyJujOc2vo"], start: 0, routineTypes: ["Day to day", "Running"], verified: true }, // Video added, verified
-            { name: "Pancake Stretch", videoIds: ["b0kCd4L20V8"], start: 18, routineTypes: ["Day to day", "High Kicks"], verified: true }, // Video added, verified
+            { name: "Forward Fold", videoIds: ["MKyJujOc2vo"], start: 0, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Pancake Stretch", videoIds: ["b0kCd4L20V8"], start: 18, routineTypes: ["Day to day", "High Kicks"], verified: true },
             { name: "BULGARIAN SPLIT SQUAT", videoIds: ["Brh1SHAkknI"], start: 4, routineTypes: ["High Kicks", "Running"], verified: true },
         ];
         
@@ -386,7 +383,7 @@
         function startRoutine() {
             individualExercisePreview.classList.add('hidden');
             if (isPreviewPlayerReady) previewPlayer.stopVideo();
-            IS_INDIVIDUAL_REVIEW_MODE = false;
+            IS_INDIVIDUAL_PREVIEW_MODE = false;
 
             TOTAL_STRETCHES = parseInt(numStretchesInput.value);
             STRETCH_DURATION = parseInt(stretchDurationInput.value);
@@ -638,8 +635,8 @@
             exercisesForMode.forEach(stretch => {
                 const option = document.createElement('option');
                 option.value = stretch.name;
-                // Add checkmark only if the exercise is explicitly marked as verified
-                option.textContent = stretch.name + (stretch.verified ? ' ✔️' : '');
+                // Removed checkmark from here
+                option.textContent = stretch.name;
                 exerciseSelect.appendChild(option);
             });
 
