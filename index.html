@@ -55,6 +55,7 @@
                     <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Day to day">Day to day</button>
                     <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Running">Running</button>
                     <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Random">Random</button>
+                    <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Recently Added">Recently Added</button>
                 </div>
                 <p class="text-gray-400 text-sm mb-3">Selected Mode: <span class="font-semibold text-cyan-300" id="current-selected-mode-text">Random</span></p>
 
@@ -92,11 +93,7 @@
                 <div id="video-selector-preview" class="absolute bottom-10 left-0 right-0 flex justify-center space-x-2 p-2"></div>
             </div>
 
-            <!-- Unverified Exercises List -->
-            <div id="unverified-exercises-list" class="bg-gray-700 p-4 rounded-xl mb-6 text-left hidden">
-                <h3 class="text-lg font-semibold mb-3 text-red-300">Exercises to Fix:</h3>
-                <ul id="fix-list" class="list-disc list-inside text-gray-300"></ul>
-            </div>
+            <!-- Removed Unverified Exercises List -->
 
 
             <button id="start-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg">
@@ -176,39 +173,40 @@
         const stretches = [
             // Hips
             { name: "Pigeon Pose", videoIds: ["M9VNeCErXq8"], routineTypes: ["Day to day", "High Kicks"], verified: true, multiPart: true, parts: [{ label: "Left Leg", start: 3 }, { label: "Right Leg", start: 30 }] },
-            { name: "Frog Stretch", videoIds: ["0CH1NVeNJbw"], start: 11, routineTypes: ["Day to day", "High Kicks"], verified: true },
+            { name: "Frog Stretch", videoIds: ["0CH1NVeNJbw"], start: 11, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
             { name: "Butterfly Stretch", videoIds: ["N-xrg7jYVW0"], start: 4, routineTypes: ["Day to day", "High Kicks"], verified: true },
-            { name: "Seated Straddle", videoIds: ["HZRZ18fDleg"], start: 4, routineTypes: ["Day to day", "High Kicks"], verified: true },
-            { name: "Kneeling Hip Flexor Stretch", videoIds: ["3wthmvKWoOU"], start: 2, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
-            { name: "Lying Hip Rotations", videoIds: ["y9Ea-Y2mXAU"], start: 4, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "90/90 Stretch", videoIds: ["F1XdXdCjERk"], start: 3, routineTypes: ["Day to day", "High Kicks"], verified: true },
-            { name: "Cossack Squat", videoIds: ["fyAl4o1BGVo"], start: 120, routineTypes: ["Day to day", "High Kicks"], verified: true },
-            { name: "Deep Squat Hold", videoIds: ["iQaw0pj6cEQ"], start: 0, routineTypes: ["Day to day", "High Kicks"], verified: true },
-            { name: "Fire Log Pose", videoIds: ["WYTm1kDeCqc"], start: 0, routineTypes: ["Day to day", "High Kicks"], verified: true },
+            { name: "Seated Straddle", videoIds: ["HZRZ18fDleg"], start: 4, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
+            { name: "Kneeling Hip Flexor Stretch", videoIds: ["3wthmvKWoOU"], start: 2, routineTypes: ["Day to day", "High Kicks", "Running", "Recently Added"], verified: true },
+            { name: "Lying Hip Rotations", videoIds: ["y9Ea-Y2mXAU"], start: 4, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "90/90 Stretch", videoIds: ["F1XdXdCjERk"], start: 3, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
+            { name: "Cossack Squat", videoIds: ["fyAl4o1BGVo"], start: 120, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
+            { name: "Deep Squat Hold", videoIds: ["iQaw0pj6cEQ"], start: 0, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
+            { name: "Fire Log Pose", videoIds: ["WYTm1kDeCqc"], start: 0, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
             { name: "Happy Baby Pose", videoIds: ["z-BjiGQZe4s"], start: 2, routineTypes: ["Day to day"], verified: true },
             
             // Ankles
-            { name: "Ankle Circles", videoIds: ["om1IAdzpKsg"], start: 7, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Heel/Toe Walks", videoIds: ["eghMLTn8tDc"], start: 7, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Kneeling Ankle Stretch", videoIds: ["2cuYI6s3Qlo"], start: 9, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Standing Calf Stretch", videoIds: ["1qlN5EXFUNo"], start: 0, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Soleus Stretch", videoIds: ["RCjNN6JfSmE"], start: 5, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Ankle Inversion/Eversion", videoIds: ["yrCiwKBGUvg"], start: 0, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Lunging Ankle Stretch", videoIds: ["nAZcYWW8QFo"], start: 3, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Alphabet Ankles", videoIds: ["YTVZUMuEKPA"], start: 6, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Seated Ankle Stretch", videoIds: ["sYAGbGEQMGE"], start: 5, routineTypes: ["Day to day", "Running"], verified: true },
+            { name: "Ankle Circles", videoIds: ["om1IAdzpKsg"], start: 7, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Heel/Toe Walks", videoIds: ["eghMLTn8tDc"], start: 7, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Kneeling Ankle Stretch", videoIds: ["2cuYI6s3Qlo"], start: 9, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Standing Calf Stretch", videoIds: ["1qlN5EXFUNo"], start: 0, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Soleus Stretch", videoIds: ["RCjNN6JfSmE"], start: 5, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Ankle Inversion/Eversion", videoIds: ["yrCiwKBGUvg"], start: 0, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Lunging Ankle Stretch", videoIds: ["nAZcYWW8QFo"], start: 3, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Alphabet Ankles", videoIds: ["YTVZUMuEKPA"], start: 6, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Seated Ankle Stretch", videoIds: ["sYAGbGEQMGE"], start: 5, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
 
             // Shoulders
             { name: "Arm Circles", videoIds: ["Lha66p0ZXUc"], routineTypes: ["Day to day"], verified: true },
-            { name: "Cross-Body Arm Stretch", videoIds: ["2quJjVCT7AY"], start: 17, routineTypes: ["Day to day"], verified: true },
+            { name: "Cross-Body Arm Stretch", videoIds: ["2quJjVCT7AY"], start: 17, routineTypes: ["Day to day", "Recently Added"], verified: true },
             { name: "Overhead Triceps Stretch", videoIds: ["NQzLqpHLyuI"], start: 2, routineTypes: ["Day to day"], verified: true },
             { name: "Doorway Chest Stretch", videoIds: ["NS64IgKUyeY"], start: 3, routineTypes: ["Day to day"], verified: true },
             { name: "Thread the Needle", videoIds: ["2CGqyWvxP-g"], start: 0, routineTypes: ["Day to day"], verified: true },
 
             // Neck
             { name: "Neck Tilts", videoIds: ["0jzWXtnipPY"], start: 0, routineTypes: ["Day to day"], verified: true },
-            { name: "Chin Tucks", videoIds: ["7rnlAVhAK-8"], start: 5, routineTypes: ["Day to day"], verified: true },
-            { name: "Ear to Shoulder Stretch", videoIds: ["UbhOswck_yQ"], start: 30, routineTypes: ["Day to day"], verified: true },
+            { name: "Neck Rotations", videoIds: [], routineTypes: ["Day to day"] }, // Still no video
+            { name: "Chin Tucks", videoIds: ["7rnlAVhAK-8"], start: 5, routineTypes: ["Day to day", "Recently Added"], verified: true },
+            { name: "Ear to Shoulder Stretch", videoIds: ["UbhOswck_yQ"], start: 30, routineTypes: ["Day to day", "Recently Added"], verified: true },
 
             // Back
             { name: "Cat-Cow Pose", videoIds: ["w_UKcI1Ftn8"], start: 0, routineTypes: ["Day to day"], verified: true },
@@ -219,13 +217,13 @@
             { name: "SEATED ABS CIRCLES", videoIds: ["GflQ_ymx9Nw"], start: 3, routineTypes: ["Day to day"], verified: true },
 
             // Legs
-            { name: "Standing Hamstring Stretch", videoIds: ["fsZebJN-gqk"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
+            { name: "Standing Hamstring Stretch", videoIds: ["fsZebJN-gqk"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running", "Recently Added"], verified: true },
             { name: "EASY KNEELING HAMSTRING STRETCH", videoIds: ["TxuyL_xwFIE"], start: 4, routineTypes: ["Day to day", "Running"], verified: true },
             { name: "SITTING HAMSTRING STRETCH", videoIds: ["TfMyFKmTpvg"], start: 2, routineTypes: ["Day to day", "Running"], verified: true },
             { name: "Quad Stretch (Standing)", videoIds: ["UTA-6h17Zdo"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
             { name: "Glute Bridge", videoId: "8bbE64NuDTU", start: 86, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
             { name: "Forward Fold", videoIds: ["MKyJujOc2vo"], start: 0, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Pancake Stretch", videoIds: ["b0kCd4L20V8"], start: 18, routineTypes: ["Day to day", "High Kicks"], verified: true },
+            { name: "Pancake Stretch", videoIds: ["b0kCd4L20V8"], start: 18, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
             { name: "BULGARIAN SPLIT SQUAT", videoIds: ["Brh1SHAkknI"], start: 4, routineTypes: ["High Kicks", "Running"], verified: true },
         ];
         
@@ -258,8 +256,7 @@
         const videoSelectorSession = document.getElementById('video-selector-session');
         const videoSelectorPreview = document.getElementById('video-selector-preview');
         const individualExerciseSelectionContainer = document.getElementById('individual-exercise-selection-container');
-        const unverifiedExercisesListContainer = document.getElementById('unverified-exercises-list');
-        const fixList = document.getElementById('fix-list');
+        // Removed unverifiedExercisesListContainer and fixList as they are no longer needed
 
 
         // --- App State ---
@@ -615,9 +612,9 @@
 
         function populateExerciseSelect() {
             exerciseSelect.innerHTML = '<option value="">-- Select an exercise --</option>';
-            fixList.innerHTML = ''; // Clear previous fix list
+            // fixList.innerHTML = ''; // Removed as "Exercises to Fix" is removed
 
-            const unverified = [];
+            // const unverified = []; // Removed as "Exercises to Fix" is removed
             const exercisesForMode = stretches.filter(stretch => {
                 // Determine if the stretch has a verified video.
                 const hasVideo = (stretch.multiPart && stretch.videoIds && stretch.videoIds.length > 0 && stretch.verified) ||
@@ -625,7 +622,7 @@
                                  (stretch.videoIds && stretch.videoIds.length > 0 && stretch.verified);
                 
                 if (!hasVideo) {
-                    unverified.push(stretch); // Push the whole stretch object to access its name
+                    // unverified.push(stretch); // Removed as "Exercises to Fix" is removed
                     return false; // Exclude from dropdown if no verified video
                 }
                 // Include in dropdown if it's for 'Random' mode or matches the selected routine type.
@@ -640,17 +637,7 @@
                 exerciseSelect.appendChild(option);
             });
 
-            if (unverified.length > 0 && SELECTED_MODE !== 'Random') {
-                unverifiedExercisesListContainer.classList.remove('hidden');
-                unverified.forEach(stretch => {
-                    const listItem = document.createElement('li');
-                    // Display "No video Available" for exercises without a video
-                    listItem.textContent = `${stretch.name} (No video Available)`;
-                    fixList.appendChild(listItem);
-                });
-            } else {
-                unverifiedExercisesListContainer.classList.add('hidden');
-            }
+            // Removed unverified list display logic as "Exercises to Fix" is removed
         }
 
         function showIndividualExercisePreview(exerciseName) {
@@ -692,13 +679,13 @@
         function updateUIBasedOnMode() {
             if (SELECTED_MODE === 'Random') {
                 individualExerciseSelectionContainer.classList.add('hidden');
-                unverifiedExercisesListContainer.classList.add('hidden');
+                // unverifiedExercisesListContainer.classList.add('hidden'); // Removed as element is removed
                 individualExercisePreview.classList.add('hidden');
                 if (isPreviewPlayerReady) previewPlayer.stopVideo();
                 exerciseSelect.value = ""; // Clear selection if switching to random
             } else {
                 individualExerciseSelectionContainer.classList.remove('hidden');
-                // Visibility of unverifiedExercisesListContainer is managed by populateExerciseSelect
+                // Visibility of unverifiedExercisesListContainer is managed by populateExerciseSelect // Removed
             }
             populateExerciseSelect(); // Repopulate and re-evaluate "fix" list visibility
         }
