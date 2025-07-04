@@ -28,6 +28,36 @@
             background-color: #06B6D4; /* cyan-500 */
             font-weight: bold;
         }
+        /* Styles for the routine summary modal */
+        .routine-summary-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .routine-summary-content {
+            background-color: #1F2937; /* gray-800 */
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            text-align: left;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom colors for the new palette */
+        .bg-purple-primary { background-color: #6A0DAD; }
+        .hover\:bg-purple-dark { background-color: #5A0CA0; } /* Slightly darker purple for hover */
+        .text-purple-accent { color: #6A0DAD; }
+        .border-purple-accent { border-color: #6A0DAD; }
+        .focus\:border-purple-accent:focus { border-color: #6A0DAD; }
+        .focus\:ring-purple-accent:focus { --tw-ring-color: #6A0DAD; }
     </style>
 </head>
 <body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
@@ -36,71 +66,93 @@
 
         <!-- Header -->
         <header class="mb-6">
-            <h1 class="text-3xl font-bold text-cyan-400">Daily Stretch</h1>
+            <h1 class="text-3xl font-bold text-purple-primary">Daily Stretch</h1>
             <p id="routine-date" class="text-gray-400">Your routine for today</p>
         </header>
 
         <!-- Initial State / Welcome Screen -->
         <div id="welcome-screen">
-            <div class="bg-gray-700 p-6 rounded-xl mb-6">
-                <h2 class="text-xl font-semibold mb-2">Today's Focus</h2>
-                <p class="text-gray-300">A quick and effective routine for <span id="selected-mode-display" class="font-semibold text-cyan-300">Random</span> selection.</p>
-            </div>
+            <!-- Page 1: Routine and Difficulty Selection -->
+            <div id="welcome-page-1">
+                <p class="text-gray-300 mb-6 text-lg font-semibold">A new routine is generated every day!</p>
 
-            <!-- Mode Selection Buttons -->
-            <div class="mb-6 p-4 bg-gray-700 rounded-xl">
-                <h3 class="text-lg font-semibold mb-3">Choose Your Routine</h3>
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="High Kicks">High Kicks</button>
-                    <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Day to day">Day to day</button>
-                    <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Running">Running</button>
-                    <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Random">Random</button>
-                    <button class="mode-btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Recently Added">Recently Added</button>
+                <div class="bg-gray-700 p-6 rounded-xl mb-6">
+                    <h2 class="text-xl font-semibold mb-2">Today's Focus</h2>
+                    <p class="text-gray-300">A quick and effective routine for <span id="selected-mode-display" class="font-semibold text-purple-primary">Random</span> selection.</p>
                 </div>
-                <p class="text-gray-400 text-sm mb-3">Selected Mode: <span class="font-semibold text-cyan-300" id="current-selected-mode-text">Random</span></p>
 
-                <h3 class="text-lg font-semibold mb-3">Routine Settings</h3>
-                <div class="flex flex-col space-y-3">
-                    <!-- Individual Exercise Selection -->
-                    <div id="individual-exercise-selection-container">
-                        <label for="exercise-select" class="block text-gray-300 text-sm font-medium mb-1">Or Select an Individual Exercise:</label>
-                        <select id="exercise-select" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-cyan-500 focus:ring focus:ring-cyan-500 focus:ring-opacity-50">
-                            <option value="">-- Select an exercise --</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="num-stretches-input" class="block text-gray-300 text-sm font-medium mb-1">Number of Stretches:</label>
-                        <input type="number" id="num-stretches-input" value="5" min="1" max="30" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-cyan-500 focus:ring focus:ring-cyan-500 focus:ring-opacity-50">
-                    </div>
-                    <div>
-                        <label for="stretch-duration-input" class="block text-gray-300 text-sm font-medium mb-1">Stretch Duration (seconds):</label>
-                        <input type="number" id="stretch-duration-input" value="60" min="10" max="180" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-cyan-500 focus:ring focus:ring-cyan-500 focus:ring-opacity-50">
-                    </div>
-                    <div>
-                        <label for="rest-duration-input" class="block text-gray-300 text-sm font-medium mb-1">Rest Duration (seconds):</label>
-                        <input type="number" id="rest-duration-input" value="10" min="5" max="60" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-cyan-500 focus:ring focus:ring-cyan-500 focus:ring-opacity-50">
+                <div class="mb-6 p-4 bg-gray-700 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-3">Choose Your Routine</h3>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button class="mode-btn w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="High Kicks">High Kicks</button>
+                        <button class="mode-btn w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Day to day">Day to day</button>
+                        <button class="mode-btn w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Running">Running</button>
+                        <button class="mode-btn w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Random">Random</button>
+                        <button class="mode-btn w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Martial Arts">Martial Arts</button>
+                        <button class="mode-btn w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105" data-mode="Unsupported">Unsupported</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Individual Exercise Preview Area -->
-            <div id="individual-exercise-preview" class="relative w-full aspect-video bg-gray-900 rounded-lg overflow-hidden mb-4 shadow-lg hidden">
-                <div id="preview-player-container">
-                    <div id="preview-player"></div>
+                <div class="mb-6 p-4 bg-gray-700 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-3">Difficulty Level</h3>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button class="difficulty-btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105" data-difficulty="Beginner">Beginner</button>
+                        <button class="difficulty-btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105" data-difficulty="Intermediate">Intermediate</button>
+                        <button class="difficulty-btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105" data-difficulty="Advanced">Advanced</button>
+                        <button class="difficulty-btn bg-purple-primary hover:bg-purple-dark text-white font-bold py-2 px-4 rounded-lg transition-transform transform hover:scale-105 active" data-difficulty="Mixed">Mixed</button>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-3">Selected Difficulty: <span class="font-semibold text-purple-primary" id="selected-difficulty-text">Mixed</span></p>
                 </div>
-                <h4 id="preview-name" class="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 text-white text-lg font-semibold py-2 px-4"></h4>
-                <!-- Video Selector for Preview -->
-                <div id="video-selector-preview" class="absolute bottom-10 left-0 right-0 flex justify-center space-x-2 p-2"></div>
+                <button id="next-page-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg">
+                    Next
+                </button>
             </div>
 
-            <!-- Removed Unverified Exercises List -->
+            <!-- Page 2: Routine Settings and Start Button -->
+            <div id="welcome-page-2" class="hidden">
+                <p class="text-gray-400 text-sm mb-3">Current Routine: <span class="font-semibold text-purple-primary" id="current-selected-mode-text">Random</span></p>
 
+                <div class="mb-6 p-4 bg-gray-700 rounded-xl">
+                    <h3 class="text-lg font-semibold mb-3">Routine Settings</h3>
+                    <div class="flex flex-col space-y-3">
+                        <!-- Individual Exercise Selection -->
+                        <div id="individual-exercise-selection-container">
+                            <label for="exercise-select" class="block text-gray-300 text-sm font-medium mb-1">Or Select an Individual Exercise:</label>
+                            <select id="exercise-select" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-purple-primary focus:ring focus:ring-purple-primary focus:ring-opacity-50">
+                                <option value="">-- Select an exercise --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="num-stretches-input" class="block text-gray-300 text-sm font-medium mb-1">Number of Stretches:</label>
+                            <input type="number" id="num-stretches-input" value="5" min="1" max="30" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-purple-primary focus:ring focus:ring-purple-primary focus:ring-opacity-50">
+                        </div>
+                        <div>
+                            <label for="stretch-duration-input" class="block text-gray-300 text-sm font-medium mb-1">Stretch Duration (seconds):</label>
+                            <input type="number" id="stretch-duration-input" value="60" min="10" max="180" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-purple-primary focus:ring focus:ring-purple-primary focus:ring-opacity-50">
+                        </div>
+                        <div>
+                            <label for="rest-duration-input" class="block text-gray-300 text-sm font-medium mb-1">Rest Duration (seconds):</label>
+                            <input type="number" id="rest-duration-input" value="10" min="5" max="60" class="w-full p-2 rounded-md bg-gray-900 text-white border border-gray-600 focus:border-purple-primary focus:ring focus:ring-purple-primary focus:ring-opacity-50">
+                        </div>
+                    </div>
+                </div>
 
-            <button id="start-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg">
-                Start Routine
-            </button>
-            <div class="mt-4 text-sm text-gray-500">
-                <p>A new routine is generated every day!</p>
+                <!-- Individual Exercise Preview Area -->
+                <div id="individual-exercise-preview" class="relative w-full aspect-video bg-gray-900 rounded-lg overflow-hidden mb-4 shadow-lg hidden">
+                    <div id="preview-player-container">
+                        <div id="preview-player"></div>
+                    </div>
+                    <h4 id="preview-name" class="absolute bottom-0 left-0 right-0 bg-gray-900 bg-opacity-75 text-white text-lg font-semibold py-2 px-4"></h4>
+                    <!-- Video Selector for Preview -->
+                    <div id="video-selector-preview" class="absolute bottom-10 left-0 right-0 flex justify-center space-x-2 p-2"></div>
+                </div>
+
+                <button id="start-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg">
+                    Start Routine
+                </button>
+                <button id="back-page-btn" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg text-lg transition-transform transform hover:scale-105 shadow-lg mt-4">
+                    Back
+                </button>
             </div>
         </div>
 
@@ -125,7 +177,7 @@
             <div class="relative w-40 h-40 mx-auto mb-4">
                 <svg class="w-full h-full" viewBox="0 0 100 100">
                     <circle class="text-gray-700" stroke-width="8" stroke="currentColor" fill="transparent" r="45" cx="50" cy="50" />
-                    <circle id="timer-progress" class="text-cyan-400 timer-circle" stroke-width="8"
+                    <circle id="timer-progress" class="text-purple-primary timer-circle" stroke-width="8"
                             stroke-dasharray="283"
                             stroke-dashoffset="283"
                             stroke-linecap="round"
@@ -146,9 +198,9 @@
         <!-- Completion Screen -->
         <div id="completion-screen" class="hidden">
             <div class="bg-gray-700 p-8 rounded-xl text-center">
-                <h2 class="text-3xl font-bold text-cyan-400 mb-4">Great Job!</h2>
+                <h2 class="text-3xl font-bold text-purple-primary mb-4">Great Job!</h2>
                 <p class="text-gray-300 mb-6">You've completed your daily stretch. See you tomorrow for a new routine!</p>
-                <button id="restart-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
+                <button id="restart-btn" class="w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg transition-transform transform hover:scale-105">
                     Do It Again
                 </button>
             </div>
@@ -158,7 +210,7 @@
         <div id="instructions" class="mt-8 text-left text-sm text-gray-400 border-t border-gray-700 pt-4">
             <h3 class="font-semibold text-lg mb-2 text-white">How to Use This App</h3>
             <ol class="list-decimal list-inside space-y-2">
-                <li>Select your desired routine mode or an individual exercise from the dropdown.</li>
+                <li>Select your desired routine mode and difficulty, then press <strong class="text-purple-primary">Next</strong>.</li>
                 <li>Adjust the routine settings, then press the <strong class="text-cyan-300">Start Routine</strong> button.</li>
                 <li>The exercise video will play automatically.</li>
                 <li>If an exercise has multiple videos, buttons like <strong class="text-cyan-300">V1, V2</strong> will appear to let you switch.</li>
@@ -168,67 +220,105 @@
         </div>
     </div>
 
+    <!-- Routine Summary Modal -->
+    <div id="routine-summary-modal" class="routine-summary-modal hidden">
+        <div class="routine-summary-content">
+            <h2 class="text-2xl font-bold text-purple-primary mb-4">Your Routine for Today</h2>
+            <ul id="routine-summary-list" class="list-disc list-inside text-gray-300 mb-6">
+                <!-- Routine exercises will be listed here -->
+            </ul>
+            <button id="start-routine-from-summary-btn" class="w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg text-lg transition-transform transform hover:scale-105">
+                Start Stretching!
+            </button>
+        </div>
+    </div>
+
     <script>
         // --- DATA: Stretches (Video-First with Verified Checkmarks) ---
         const stretches = [
             // Hips
-            { name: "Pigeon Pose", videoIds: ["M9VNeCErXq8"], routineTypes: ["Day to day", "High Kicks"], verified: true, multiPart: true, parts: [{ label: "Left Leg", start: 3 }, { label: "Right Leg", start: 30 }] },
-            { name: "Frog Stretch", videoIds: ["0CH1NVeNJbw"], start: 11, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
-            { name: "Butterfly Stretch", videoIds: ["N-xrg7jYVW0"], start: 4, routineTypes: ["Day to day", "High Kicks"], verified: true },
-            { name: "Seated Straddle", videoIds: ["HZRZ18fDleg"], start: 4, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
-            { name: "Kneeling Hip Flexor Stretch", videoIds: ["3wthmvKWoOU"], start: 2, routineTypes: ["Day to day", "High Kicks", "Running", "Recently Added"], verified: true },
-            { name: "Lying Hip Rotations", videoIds: ["y9Ea-Y2mXAU"], start: 4, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "90/90 Stretch", videoIds: ["F1XdXdCjERk"], start: 3, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
-            { name: "Cossack Squat", videoIds: ["fyAl4o1BGVo"], start: 120, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
-            { name: "Deep Squat Hold", videoIds: ["iQaw0pj6cEQ"], start: 0, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
-            { name: "Fire Log Pose", videoIds: ["WYTm1kDeCqc"], start: 0, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
-            { name: "Happy Baby Pose", videoIds: ["z-BjiGQZe4s"], start: 2, routineTypes: ["Day to day"], verified: true },
+            { name: "Pigeon Pose", videoIds: ["M9VNeCErXq8"], routineTypes: ["Day to day", "High Kicks", "Martial Arts"], multiPart: true, parts: [{ label: "Left Leg", start: 3 }, { label: "Right Leg", start: 30 }], difficulty: "Intermediate" },
+            { name: "Frog Stretch", videoIds: ["0CH1NVeNJbw"], start: 11, routineTypes: ["Day to day", "High Kicks", "Martial Arts"], difficulty: "Advanced" },
+            { name: "Butterfly Stretch", videoIds: ["N-xrg7jYVW0"], start: 4, routineTypes: ["Day to day", "High Kicks"], difficulty: "Beginner" },
+            { name: "Seated Straddle", videoIds: ["HZRZ18fDleg"], start: 4, routineTypes: ["Day to day", "High Kicks", "Martial Arts"], difficulty: "Intermediate" },
+            { name: "Kneeling Hip Flexor Stretch", videoIds: ["3wthmvKWoOU"], start: 2, routineTypes: ["Day to day", "High Kicks", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "Lying Hip Rotations", videoIds: ["y9Ea-Y2mXAU"], start: 4, routineTypes: ["Day to day", "Running"], difficulty: "Beginner" },
+            { name: "90/90 Stretch", videoIds: ["F1XdXdCjERk"], start: 3, routineTypes: ["Day to day", "High Kicks", "Martial Arts"], difficulty: "Intermediate" },
+            { name: "Cossack Squat", videoIds: ["fyAl4o1BGVo"], start: 120, routineTypes: ["Day to day", "High Kicks", "Martial Arts"], difficulty: "Advanced" },
+            { name: "Deep Squat Hold", videoIds: ["iQaw0pj6cEQ"], start: 0, routineTypes: ["Day to day", "High Kicks", "Martial Arts"], difficulty: "Intermediate" },
+            { name: "Fire Log Pose", videoIds: ["WYTm1kDeCqc"], start: 0, routineTypes: ["Day to day", "High Kicks"], difficulty: "Advanced" },
+            { name: "Happy Baby Pose", videoIds: ["z-BjiGQZe4s"], start: 2, routineTypes: ["Day to day"], difficulty: "Beginner" },
             
             // Ankles
-            { name: "Ankle Circles", videoIds: ["om1IAdzpKsg"], start: 7, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Heel/Toe Walks", videoIds: ["eghMLTn8tDc"], start: 7, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Kneeling Ankle Stretch", videoIds: ["2cuYI6s3Qlo"], start: 9, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Standing Calf Stretch", videoIds: ["1qlN5EXFUNo"], start: 0, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Soleus Stretch", videoIds: ["RCjNN6JfSmE"], start: 5, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Ankle Inversion/Eversion", videoIds: ["yrCiwKBGUvg"], start: 0, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Lunging Ankle Stretch", videoIds: ["nAZcYWW8QFo"], start: 3, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Alphabet Ankles", videoIds: ["YTVZUMuEKPA"], start: 6, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
-            { name: "Seated Ankle Stretch", videoIds: ["sYAGbGEQMGE"], start: 5, routineTypes: ["Day to day", "Running", "Recently Added"], verified: true },
+            { name: "Ankle Circles", videoIds: ["om1IAdzpKsg"], start: 7, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "Heel/Toe Walks", videoIds: ["eghMLTn8tDc"], start: 7, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "Kneeling Ankle Stretch", videoIds: ["2cuYI6s3Qlo"], start: 9, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Intermediate" },
+            { name: "Standing Calf Stretch", videoIds: ["1qlN5EXFUNo"], start: 0, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "Soleus Stretch", videoIds: ["RCjNN6JfSmE"], start: 5, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Intermediate" },
+            { name: "Ankle Inversion/Eversion", videoIds: ["yrCiwKBGUvg"], start: 0, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "Lunging Ankle Stretch", videoIds: ["nAZcYWW8QFo"], start: 3, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Intermediate" },
+            { name: "Alphabet Ankles", videoIds: ["YTVZUMuEKPA"], start: 6, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "Seated Ankle Stretch", videoIds: ["sYAGbGEQMGE"], start: 5, routineTypes: ["Day to day", "Running", "Martial Arts"], difficulty: "Intermediate" },
 
             // Shoulders
-            { name: "Arm Circles", videoIds: ["Lha66p0ZXUc"], routineTypes: ["Day to day"], verified: true },
-            { name: "Cross-Body Arm Stretch", videoIds: ["2quJjVCT7AY"], start: 17, routineTypes: ["Day to day", "Recently Added"], verified: true },
-            { name: "Overhead Triceps Stretch", videoIds: ["NQzLqpHLyuI"], start: 2, routineTypes: ["Day to day"], verified: true },
-            { name: "Doorway Chest Stretch", videoIds: ["NS64IgKUyeY"], start: 3, routineTypes: ["Day to day"], verified: true },
-            { name: "Thread the Needle", videoIds: ["2CGqyWvxP-g"], start: 0, routineTypes: ["Day to day"], verified: true },
+            { name: "Arm Circles", videoIds: ["Lha66p0ZXUc"], start: 0, routineTypes: ["Day to day"], difficulty: "Beginner" },
+            { name: "Cross-Body Arm Stretch", videoIds: ["2quJjVCT7AY"], start: 17, routineTypes: ["Day to day"], difficulty: "Beginner" },
+            { name: "Overhead Triceps Stretch", videoIds: ["NQzLqpHLyuI"], start: 2, routineTypes: ["Day to day"], difficulty: "Beginner" },
+            { name: "Doorway Chest Stretch", videoIds: ["NS64IgKUyeY"], start: 3, routineTypes: ["Day to day"], difficulty: "Intermediate" },
+            { name: "Thread the Needle", videoIds: ["2CGqyWvxP-g"], start: 0, routineTypes: ["Day to day"], difficulty: "Intermediate" },
 
             // Neck
-            { name: "Neck Tilts", videoIds: ["0jzWXtnipPY"], start: 0, routineTypes: ["Day to day"], verified: true },
-            { name: "Neck Rotations", videoIds: [], routineTypes: ["Day to day"] }, // Still no video
-            { name: "Chin Tucks", videoIds: ["7rnlAVhAK-8"], start: 5, routineTypes: ["Day to day", "Recently Added"], verified: true },
-            { name: "Ear to Shoulder Stretch", videoIds: ["UbhOswck_yQ"], start: 30, routineTypes: ["Day to day", "Recently Added"], verified: true },
+            { name: "Neck Tilts", videoIds: ["0jzWXtnipPY"], start: 0, routineTypes: ["Day to day"], difficulty: "Beginner" },
+            { name: "Chin Tucks", videoIds: ["7rnlAVhAK-8"], start: 5, routineTypes: ["Day to day"], difficulty: "Beginner" },
+            { name: "Ear to Shoulder Stretch", videoIds: ["UbhOswck_yQ"], start: 30, routineTypes: ["Day to day"], difficulty: "Beginner" },
 
             // Back
-            { name: "Cat-Cow Pose", videoIds: ["w_UKcI1Ftn8"], start: 0, routineTypes: ["Day to day"], verified: true },
-            { name: "Child's Pose", videoIds: ["DMwRPGMPB10"], start: 0, routineTypes: ["Day to day"], verified: true },
-            { name: "Spinal Twist (Seated)", videoIds: ["4YlCtaTdtgA"], start: 0, routineTypes: ["Day to day"], verified: true },
-            { name: "Supermans", videoIds: ["pGeaBXLwDtw"], start: 3, routineTypes: ["Day to day"], verified: true },
-            { name: "Cobra Stretch", videoIds: ["9Z7IO95Np2g"], start: 0, routineTypes: ["Day to day"], verified: true },
-            { name: "SEATED ABS CIRCLES", videoIds: ["GflQ_ymx9Nw"], start: 3, routineTypes: ["Day to day"], verified: true },
+            { name: "Cat-Cow Pose", videoIds: ["w_UKcI1Ftn8"], start: 0, routineTypes: ["Day to day"], difficulty: "Beginner" },
+            { name: "Child's Pose", videoIds: ["DMwRPGMPB10"], start: 0, routineTypes: ["Day to day"], difficulty: "Beginner" },
+            { name: "Spinal Twist (Seated)", videoIds: ["4YlCtaTdtgA"], start: 0, routineTypes: ["Day to day"], difficulty: "Intermediate" },
+            { name: "Supermans", videoIds: ["pGeaBXLwDtw"], start: 3, routineTypes: ["Day to day"], difficulty: "Intermediate" },
+            { name: "Cobra Stretch", videoIds: ["9Z7IO95Np2g"], start: 0, routineTypes: ["Day to day"], difficulty: "Intermediate" },
+            { name: "SEATED ABS CIRCLES", videoIds: ["GflQ_ymx9Nw"], start: 3, routineTypes: ["Day to day"], difficulty: "Beginner" },
 
             // Legs
-            { name: "Standing Hamstring Stretch", videoIds: ["fsZebJN-gqk"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running", "Recently Added"], verified: true },
-            { name: "EASY KNEELING HAMSTRING STRETCH", videoIds: ["TxuyL_xwFIE"], start: 4, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "SITTING HAMSTRING STRETCH", videoIds: ["TfMyFKmTpvg"], start: 2, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Quad Stretch (Standing)", videoIds: ["UTA-6h17Zdo"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
-            { name: "Glute Bridge", videoId: "8bbE64NuDTU", start: 86, routineTypes: ["Day to day", "High Kicks", "Running"], verified: true },
-            { name: "Forward Fold", videoIds: ["MKyJujOc2vo"], start: 0, routineTypes: ["Day to day", "Running"], verified: true },
-            { name: "Pancake Stretch", videoIds: ["b0kCd4L20V8"], start: 18, routineTypes: ["Day to day", "High Kicks", "Recently Added"], verified: true },
-            { name: "BULGARIAN SPLIT SQUAT", videoIds: ["Brh1SHAkknI"], start: 4, routineTypes: ["High Kicks", "Running"], verified: true },
+            { name: "Standing Hamstring Stretch", videoIds: ["fsZebJN-gqk"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "EASY KNEELING HAMSTRING STRETCH", videoIds: ["TxuyL_xwFIE"], start: 4, routineTypes: ["Day to day", "Running"], difficulty: "Beginner" },
+            { name: "SITTING HAMSTRING STRETCH", videoIds: ["TfMyFKmTpvg"], start: 2, routineTypes: ["Day to day", "Running"], difficulty: "Intermediate" },
+            { name: "Quad Stretch (Standing)", videoIds: ["UTA-6h17Zdo"], start: 0, routineTypes: ["Day to day", "High Kicks", "Running", "Martial Arts"], difficulty: "Beginner" },
+            { name: "Glute Bridge", videoIds: ["8bbE64NuDTU"], start: 86, routineTypes: ["Day to day", "High Kicks", "Running"], difficulty: "Beginner" },
+            { name: "Forward Fold", videoIds: ["MKyJujOc2vo"], start: 0, routineTypes: ["Day to day", "Running"], difficulty: "Intermediate" },
+            { name: "Pancake Stretch", videoIds: ["b0kCd4L20V8"], start: 18, routineTypes: ["Day to day", "High Kicks", "Martial Arts"], difficulty: "Advanced" },
+            { name: "BULGARIAN SPLIT SQUAT", videoIds: ["Brh1SHAkknI"], start: 4, routineTypes: ["High Kicks", "Running"], difficulty: "Advanced" },
+
+            // --- New Martial Arts Stretches (with placeholder videos) ---
+            { name: "Dynamic Leg Swings (Front/Back)", videoIds: ["placeholder_MA_1"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Dynamic Leg Swings (Side)", videoIds: ["placeholder_MA_2"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Spine Mobility (Rolling)", videoIds: ["placeholder_MA_3"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Wrist Rotations", videoIds: ["placeholder_MA_4"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Ankle Rotations", videoIds: ["placeholder_MA_5"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Groin Stretch (Standing)", videoIds: ["placeholder_MA_6"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Knee to Chest (Standing)", videoIds: ["placeholder_MA_7"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Quad Pull (Standing)", videoIds: ["placeholder_MA_8"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Hamstring Sweep", videoIds: ["placeholder_MA_9"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Shoulder Rotations (Dynamic)", videoIds: ["placeholder_MA_10"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Trunk Twists (Standing)", videoIds: ["placeholder_MA_11"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Side Bends (Standing)", videoIds: ["placeholder_MA_12"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Hip Circles (Standing)", videoIds: ["placeholder_MA_13"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Leg Cradle", videoIds: ["placeholder_MA_14"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Deep Lunge with Twist", videoIds: ["placeholder_MA_15"], start: 0, routineTypes: ["Unsupported"], difficulty: "Intermediate" },
+            { name: "Knuckle Pushups (Wrist Stretch)", videoIds: ["placeholder_MA_16"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Bridge (Yoga/Capoeira)", videoIds: ["placeholder_MA_17"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Straddle Stretch (Dynamic)", videoIds: ["placeholder_MA_18"], start: 0, routineTypes: ["Unsupported"], difficulty: "Advanced" },
+            { name: "Wrist Flexor Stretch", videoIds: ["placeholder_MA_19"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
+            { name: "Wrist Extensor Stretch", videoIds: ["placeholder_MA_20"], start: 0, routineTypes: ["Unsupported"], difficulty: "Beginner" },
         ];
         
         // --- DOM Elements ---
         const welcomeScreen = document.getElementById('welcome-screen');
+        const welcomePage1 = document.getElementById('welcome-page-1');
+        const welcomePage2 = document.getElementById('welcome-page-2');
+        const nextPageBtn = document.getElementById('next-page-btn');
+        const backPageBtn = document.getElementById('back-page-btn');
         const sessionScreen = document.getElementById('session-screen');
         const completionScreen = document.getElementById('completion-screen');
         const startBtn = document.getElementById('start-btn');
@@ -256,7 +346,11 @@
         const videoSelectorSession = document.getElementById('video-selector-session');
         const videoSelectorPreview = document.getElementById('video-selector-preview');
         const individualExerciseSelectionContainer = document.getElementById('individual-exercise-selection-container');
-        // Removed unverifiedExercisesListContainer and fixList as they are no longer needed
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        const selectedDifficultyText = document.getElementById('selected-difficulty-text');
+        const routineSummaryModal = document.getElementById('routine-summary-modal');
+        const routineSummaryList = document.getElementById('routine-summary-list');
+        const startRoutineFromSummaryBtn = document.getElementById('start-routine-from-summary-btn');
 
 
         // --- App State ---
@@ -270,6 +364,7 @@
         let REST_DURATION = 10;
         let TOTAL_STRETCHES = 5;
         let SELECTED_MODE = 'Random';
+        let SELECTED_DIFFICULTY = 'Mixed'; // New state for difficulty
         let IS_INDIVIDUAL_PREVIEW_MODE = false;
         let currentPartIndex = 0; // New: To track parts of a multi-part exercise
 
@@ -313,23 +408,21 @@
                     start: stretch.parts[partIndex].start || 0
                 };
             }
-            // Check for single videoId with verified flag first
-            if (stretch.videoId && stretch.verified) {
-                return {
-                    videoId: stretch.videoId,
-                    start: stretch.start || 0
-                };
-            }
-            // Then check for videoIds array with verified flag
-            if (stretch.videoIds && stretch.videoIds.length > 0 && stretch.verified) {
+            // All videos are now in videoIds array
+            if (stretch.videoIds && stretch.videoIds.length > 0) {
                 return {
                     videoId: stretch.videoIds[index] || stretch.videoIds[0],
                     start: stretch.start || 0
                 };
             }
-            return { videoId: null, start: 0 }; // No video available or not verified
+            return { videoId: null, start: 0 }; // No video available
         }
 
+        // Helper function to check if a stretch has a video
+        function hasVideo(stretch) {
+            return (stretch.multiPart && stretch.videoIds && stretch.videoIds.length > 0) ||
+                   (stretch.videoIds && stretch.videoIds.length > 0);
+        }
 
         function getDayOfYear() {
             const now = new Date();
@@ -356,25 +449,18 @@
         function generateDailyRoutine() {
             const day = getDayOfYear();
             let filteredStretches = stretches.filter(stretch => {
-                // For multi-part exercises, consider them as having a video if videoIds is present and verified
-                const hasVideo = (stretch.multiPart && stretch.videoIds && stretch.videoIds.length > 0 && stretch.verified) ||
-                                 (stretch.videoId && stretch.verified) ||
-                                 (stretch.videoIds && stretch.videoIds.length > 0 && stretch.verified);
-                if (!hasVideo) return false; // Exclude stretches without a verified video
-                return SELECTED_MODE === 'Random' || (stretch.routineTypes && stretch.routineTypes.includes(SELECTED_MODE));
+                const matchesMode = SELECTED_MODE === 'Random' || (stretch.routineTypes && stretch.routineTypes.includes(SELECTED_MODE));
+                const matchesDifficulty = SELECTED_DIFFICULTY === 'Mixed' || stretch.difficulty === SELECTED_DIFFICULTY;
+                return hasVideo(stretch) && matchesMode && matchesDifficulty;
             });
             const shuffledStretches = shuffleArray(filteredStretches, day);
             dailyRoutine = shuffledStretches.slice(0, TOTAL_STRETCHES);
 
-            if (dailyRoutine.length === 0 && SELECTED_MODE !== 'Random') {
-                showCustomMessage(`No stretches with verified videos found for "${SELECTED_MODE}" routine. Trying "Random" instead.`);
-                SELECTED_MODE = 'Random';
-                currentSelectedModeText.textContent = 'Random';
-                selectedModeDisplay.textContent = 'Random';
-                generateDailyRoutine();
-            } else if (dailyRoutine.length === 0 && SELECTED_MODE === 'Random') {
-                showCustomMessage('No stretches with verified videos available to generate a random routine.');
+            if (dailyRoutine.length === 0) {
+                showCustomMessage(`No stretches with videos found for "${SELECTED_MODE}" routine with "${SELECTED_DIFFICULTY}" difficulty. Please adjust your settings.`);
+                return false; // Indicate that routine generation failed
             }
+            return true; // Indicate success
         }
 
         function startRoutine() {
@@ -391,19 +477,17 @@
             const selectedExerciseName = exerciseSelect.value;
             if (selectedExerciseName && selectedExerciseName !== "") {
                 const selectedStretch = stretches.find(s => s.name === selectedExerciseName);
-                const hasVideo = (selectedStretch.multiPart && selectedStretch.videoIds && selectedStretch.videoIds.length > 0 && selectedStretch.verified) ||
-                                         (selectedStretch.videoId && selectedStretch.verified) ||
-                                         (selectedStretch.videoIds && selectedStretch.videoIds.length > 0 && selectedStretch.verified);
-
-                if (selectedStretch && hasVideo) {
+                if (selectedStretch && hasVideo(selectedStretch)) {
                     dailyRoutine = [selectedStretch];
                     TOTAL_STRETCHES = 1; // Override total stretches for individual exercise
                 } else {
-                    showCustomMessage(`The selected exercise "${selectedExerciseName}" does not have a verified video and cannot be started.`);
+                    showCustomMessage(`The selected exercise "${selectedExerciseName}" does not have a video and cannot be started.`);
                     return; 
                 }
             } else {
-                generateDailyRoutine();
+                if (!generateDailyRoutine()) { // Attempt to generate routine, exit if failed
+                    return;
+                }
             }
             
             if (dailyRoutine.length === 0) {
@@ -411,6 +495,26 @@
                 return; 
             }
 
+            // Display routine summary before starting
+            displayRoutineSummary();
+        }
+
+        function displayRoutineSummary() {
+            routineSummaryList.innerHTML = ''; // Clear previous list
+            dailyRoutine.forEach((stretch, index) => {
+                const listItem = document.createElement('li');
+                let displayName = stretch.name;
+                if (stretch.multiPart && stretch.parts) {
+                    displayName += ` (${stretch.parts.map(p => p.label).join(', ')})`;
+                }
+                listItem.textContent = `${index + 1}. ${displayName} (${stretch.difficulty})`;
+                routineSummaryList.appendChild(listItem);
+            });
+            routineSummaryModal.classList.remove('hidden');
+        }
+
+        function proceedToFirstStretch() {
+            routineSummaryModal.classList.add('hidden');
             currentStretchIndex = 0;
             isPaused = false;
             isResting = false;
@@ -420,6 +524,7 @@
             document.getElementById('instructions').classList.add('hidden');
             startNextStretch();
         }
+
 
         function startNextStretch() {
             if (currentStretchIndex >= dailyRoutine.length) {
@@ -501,7 +606,7 @@
             container.innerHTML = ''; // Clear previous buttons
             // For multi-part exercises, we assume the video is fixed per exercise, not per part.
             // So we use the main videoIds.
-            const videos = stretch.videoIds || (stretch.videoId && stretch.verified ? [stretch.videoId] : []);
+            const videos = stretch.videoIds || [];
 
             if (videos.length <= 1) {
                 return; // Don't show selector for single or no videos
@@ -582,6 +687,8 @@
                 completionScreen.classList.remove('hidden');
             } else {
                 welcomeScreen.classList.remove('hidden');
+                welcomePage1.classList.remove('hidden'); // Show page 1 when ending prematurely
+                welcomePage2.classList.add('hidden');
                 document.getElementById('instructions').classList.remove('hidden');
             }
             if (isSessionPlayerReady) sessionPlayer.stopVideo();
@@ -600,7 +707,7 @@
             messageBox.innerHTML = `
                 <div class="bg-gray-800 p-6 rounded-xl shadow-2xl text-center max-w-sm mx-auto">
                     <p class="text-white text-lg mb-4">${message}</p>
-                    <button id="message-box-ok" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-6 rounded-lg">OK</button>
+                    <button id="message-box-ok" class="bg-purple-primary hover:bg-purple-dark text-white font-bold py-2 px-6 rounded-lg">OK</button>
                 </div>
             `;
             document.body.appendChild(messageBox);
@@ -612,32 +719,19 @@
 
         function populateExerciseSelect() {
             exerciseSelect.innerHTML = '<option value="">-- Select an exercise --</option>';
-            // fixList.innerHTML = ''; // Removed as "Exercises to Fix" is removed
-
-            // const unverified = []; // Removed as "Exercises to Fix" is removed
-            const exercisesForMode = stretches.filter(stretch => {
-                // Determine if the stretch has a verified video.
-                const hasVideo = (stretch.multiPart && stretch.videoIds && stretch.videoIds.length > 0 && stretch.verified) ||
-                                 (stretch.videoId && stretch.verified) ||
-                                 (stretch.videoIds && stretch.videoIds.length > 0 && stretch.verified);
-                
-                if (!hasVideo) {
-                    // unverified.push(stretch); // Removed as "Exercises to Fix" is removed
-                    return false; // Exclude from dropdown if no verified video
-                }
-                // Include in dropdown if it's for 'Random' mode or matches the selected routine type.
-                return SELECTED_MODE === 'Random' || (stretch.routineTypes && stretch.routineTypes.includes(SELECTED_MODE));
+            
+            const exercisesForModeAndDifficulty = stretches.filter(stretch => {
+                const matchesMode = SELECTED_MODE === 'Random' || (stretch.routineTypes && stretch.routineTypes.includes(SELECTED_MODE));
+                const matchesDifficulty = SELECTED_DIFFICULTY === 'Mixed' || stretch.difficulty === SELECTED_DIFFICULTY;
+                return hasVideo(stretch) && matchesMode && matchesDifficulty;
             });
 
-            exercisesForMode.forEach(stretch => {
+            exercisesForModeAndDifficulty.forEach(stretch => {
                 const option = document.createElement('option');
                 option.value = stretch.name;
-                // Removed checkmark from here
                 option.textContent = stretch.name;
                 exerciseSelect.appendChild(option);
             });
-
-            // Removed unverified list display logic as "Exercises to Fix" is removed
         }
 
         function showIndividualExercisePreview(exerciseName) {
@@ -665,9 +759,7 @@
                     updateVideoSelectionUI(videoSelectorPreview, selectedStretch, previewPlayer);
                     individualExercisePreview.classList.remove('hidden');
                 } else {
-                    // This case should ideally not happen if populateExerciseSelect filters correctly,
-                    // but it's a good fallback for direct selection or other issues.
-                    showCustomMessage(`"${selectedStretch.name}" does not have a verified video for preview. Please select another exercise or a routine mode.`);
+                    showCustomMessage(`"${selectedStretch.name}" does not have a video for preview. Please select another exercise or a routine mode.`);
                     individualExercisePreview.classList.add('hidden');
                     exerciseSelect.value = ""; // Reset dropdown if no video
                     IS_INDIVIDUAL_PREVIEW_MODE = false;
@@ -677,17 +769,9 @@
         }
 
         function updateUIBasedOnMode() {
-            if (SELECTED_MODE === 'Random') {
-                individualExerciseSelectionContainer.classList.add('hidden');
-                // unverifiedExercisesListContainer.classList.add('hidden'); // Removed as element is removed
-                individualExercisePreview.classList.add('hidden');
-                if (isPreviewPlayerReady) previewPlayer.stopVideo();
-                exerciseSelect.value = ""; // Clear selection if switching to random
-            } else {
-                individualExerciseSelectionContainer.classList.remove('hidden');
-                // Visibility of unverifiedExercisesListContainer is managed by populateExerciseSelect // Removed
-            }
-            populateExerciseSelect(); // Repopulate and re-evaluate "fix" list visibility
+            // This function is now mainly for populating the individual exercise select
+            // and ensuring the correct mode/difficulty is reflected in the dropdown.
+            populateExerciseSelect(); // Repopulate based on new mode and difficulty
         }
         
         function initializeApp() {
@@ -695,7 +779,7 @@
             routineDateEl.textContent = `Your routine for ${today.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
             
             selectedModeDisplay.textContent = SELECTED_MODE;
-            currentSelectedModeText.textContent = SELECTED_MODE;
+            selectedDifficultyText.textContent = SELECTED_DIFFICULTY;
 
             initializeAppListeners();
             updateUIBasedOnMode(); // Initial UI setup based on default mode
@@ -710,26 +794,65 @@
                 startRoutine();
             });
 
+            startRoutineFromSummaryBtn.addEventListener('click', proceedToFirstStretch);
+
+            nextPageBtn.addEventListener('click', () => {
+                welcomePage1.classList.add('hidden');
+                welcomePage2.classList.remove('hidden');
+                currentSelectedModeText.textContent = SELECTED_MODE; // Update current routine text on page 2
+                populateExerciseSelect(); // Re-populate dropdown based on selected mode/difficulty
+            });
+
+            backPageBtn.addEventListener('click', () => {
+                welcomePage2.classList.add('hidden');
+                welcomePage1.classList.remove('hidden');
+            });
+
             modeButtons.forEach(button => {
                 button.addEventListener('click', (e) => {
+                    // Remove 'active' class from all mode buttons
+                    modeButtons.forEach(btn => {
+                        btn.classList.remove('bg-purple-primary', 'hover:bg-purple-dark');
+                        btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    });
+                    // Add 'active' class to the clicked button
+                    e.target.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    e.target.classList.add('bg-purple-primary', 'hover:bg-purple-dark');
+
                     SELECTED_MODE = e.target.dataset.mode;
                     selectedModeDisplay.textContent = SELECTED_MODE;
-                    currentSelectedModeText.textContent = SELECTED_MODE;
                     exerciseSelect.value = ""; // Clear individual selection when mode changes
                     individualExercisePreview.classList.add('hidden');
                     IS_INDIVIDUAL_PREVIEW_MODE = false;
                     if (isPreviewPlayerReady) previewPlayer.stopVideo();
-                    updateUIBasedOnMode(); // Update UI when mode changes
+                    // No direct UI update here, will happen when transitioning to page 2 or if individual exercise is selected
+                });
+            });
+
+            difficultyButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Remove 'active' class from all difficulty buttons
+                    difficultyButtons.forEach(btn => {
+                        btn.classList.remove('bg-purple-primary', 'hover:bg-purple-dark', 'active');
+                        btn.classList.add('bg-gray-600', 'hover:bg-gray-700');
+                    });
+                    // Add 'active' class to the clicked button
+                    e.target.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+                    e.target.classList.add('bg-purple-primary', 'hover:bg-purple-dark', 'active');
+
+                    SELECTED_DIFFICULTY = e.target.dataset.difficulty;
+                    selectedDifficultyText.textContent = SELECTED_DIFFICULTY;
+                    exerciseSelect.value = ""; // Clear individual selection when difficulty changes
+                    individualExercisePreview.classList.add('hidden');
+                    IS_INDIVIDUAL_PREVIEW_MODE = false;
+                    if (isPreviewPlayerReady) previewPlayer.stopVideo();
+                    // No direct UI update here, will happen when transitioning to page 2 or if individual exercise is selected
                 });
             });
 
             exerciseSelect.addEventListener('change', (e) => {
                 showIndividualExercisePreview(e.target.value);
-                if (e.target.value) {
-                    currentSelectedModeText.textContent = "Individual Exercise";
-                } else {
-                    currentSelectedModeText.textContent = SELECTED_MODE;
-                }
+                // currentSelectedModeText is updated within showIndividualExercisePreview or when returning to page 2
             });
         }
 
