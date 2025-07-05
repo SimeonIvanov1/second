@@ -30,28 +30,8 @@
             font-weight: bold;
         }
         /* Styles for the routine summary modal */
-        .routine-summary-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .routine-summary-content {
-            background-color: #1F2937; /* gray-800 */
-            padding: 2rem;
-            border-radius: 1rem;
-            max-width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-            text-align: left;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-        }
+        /* REMOVED: .routine-summary-modal styles */
+        /* REMOVED: .routine-summary-content styles */
         /* Custom colors for the new palette */
         .bg-purple-primary { background-color: #6A0DAD; }
         .hover\:bg-purple-dark { background-color: #5A0CA0; } /* Slightly darker purple for hover */
@@ -240,19 +220,6 @@
         </div>
     </div>
 
-    <!-- Routine Summary Modal -->
-    <div id="routine-summary-modal" class="routine-summary-modal hidden">
-        <div class="routine-summary-content">
-            <h2 class="text-2xl font-bold text-purple-primary mb-4">Your Routine for Today</h2>
-            <ul id="routine-summary-list" class="list-disc list-inside text-gray-300 mb-6">
-                <!-- Routine exercises will be listed here -->
-            </ul>
-            <button id="start-routine-from-summary-btn" class="w-full bg-purple-primary hover:bg-purple-dark text-white font-bold py-3 px-4 rounded-lg text-lg transition-transform transform hover:scale-105">
-                Start Stretching!
-            </button>
-        </div>
-    </div>
-
     <script>
         // Helper function to capitalize the first letter of each word
         function toTitleCase(str) {
@@ -421,9 +388,10 @@
         const individualExerciseSelectionContainer = document.getElementById('individual-exercise-selection-container');
         const difficultyButtons = document.querySelectorAll('.difficulty-btn');
         const selectedDifficultyText = document.getElementById('selected-difficulty-text');
-        const routineSummaryModal = document.getElementById('routine-summary-modal'); // Re-added
-        const routineSummaryList = document.getElementById('routine-summary-list'); // Re-added
-        const startRoutineFromSummaryBtn = document.getElementById('start-routine-from-summary-btn'); // Re-added
+        // Removed references to routine summary modal elements
+        // const routineSummaryModal = document.getElementById('routine-summary-modal'); 
+        // const routineSummaryList = document.getElementById('routine-summary-list'); 
+        // const startRoutineFromSummaryBtn = document.getElementById('start-routine-from-summary-btn'); 
 
 
         // --- App State ---
@@ -530,7 +498,7 @@
             dailyRoutine = shuffledStretches.slice(0, TOTAL_STRETCHES);
 
             if (dailyRoutine.length === 0) {
-                showCustomMessage(`No stretches with videos found for "${SELECTED_MODE}" routine with "${SELECTED_DIFFICULTY}" difficulty. Please adjust your settings.`);
+                console.error(`No stretches with videos found for "${SELECTED_MODE}" routine with "${SELECTED_DIFFICULTY}" difficulty. Please adjust your settings.`);
                 return false; // Indicate that routine generation failed
             }
             return true; // Indicate success
@@ -554,7 +522,7 @@
                     dailyRoutine = [selectedStretch];
                     TOTAL_STRETCHES = 1; // Override total stretches for individual exercise
                 } else {
-                    showCustomMessage(`The selected exercise "${selectedExerciseName}" does not have a video and cannot be started.`);
+                    console.error(`The selected exercise "${selectedExerciseName}" does not have a video and cannot be started.`);
                     return; 
                 }
             } else {
@@ -564,30 +532,11 @@
             }
             
             if (dailyRoutine.length === 0) {
-                showCustomMessage("No stretches available for the selected criteria. Please adjust your routine settings.");
+                console.error("No stretches available for the selected criteria. Please adjust your routine settings.");
                 return; 
             }
 
-            // Display routine summary before starting
-            displayRoutineSummary();
-        }
-
-        function displayRoutineSummary() {
-            routineSummaryList.innerHTML = ''; // Clear previous list
-            dailyRoutine.forEach((stretch, index) => {
-                const listItem = document.createElement('li');
-                let displayName = stretch.name;
-                if (stretch.multiPart && stretch.parts) {
-                    displayName += ` (${stretch.parts.map(p => p.label).join(', ')})`;
-                }
-                listItem.textContent = `${index + 1}. ${displayName} (${stretch.difficulty})`;
-                routineSummaryList.appendChild(listItem);
-            });
-            routineSummaryModal.classList.remove('hidden');
-        }
-
-        function proceedToFirstStretch() {
-            routineSummaryModal.classList.add('hidden');
+            // Directly proceed to start the first stretch without the summary modal
             currentStretchIndex = 0;
             isPaused = false;
             isResting = false;
@@ -597,6 +546,9 @@
             document.getElementById('instructions').classList.add('hidden');
             startNextStretch();
         }
+
+        // Removed displayRoutineSummary() function
+        // Removed proceedToFirstStretch() function
 
 
         function startNextStretch() {
@@ -632,7 +584,7 @@
             if (isSessionPlayerReady && videoDetails.videoId) {
                 sessionPlayer.loadVideoById({ videoId: videoDetails.videoId, startSeconds: videoDetails.start });
             } else if (!videoDetails.videoId) {
-                showCustomMessage(`No video found for ${stretchDisplayName}. Skipping.`);
+                console.error(`No video found for ${stretchDisplayName}. Skipping.`);
                 handlePartCompletion(); // Use handlePartCompletion to move to next part/stretch
                 return;
             }
@@ -785,6 +737,8 @@
             currentPartIndex = 0; // Reset part index on routine end
         }
 
+        // Removed showCustomMessage function
+        /*
         function showCustomMessage(message) {
             const messageBox = document.createElement('div');
             messageBox.className = 'fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4';
@@ -800,6 +754,7 @@
                 document.body.removeChild(messageBox);
             });
         }
+        */
 
         function populateExerciseSelect() {
             exerciseSelect.innerHTML = '<option value="">-- Select an exercise --</option>';
@@ -843,7 +798,7 @@
                     updateVideoSelectionUI(videoSelectorPreview, selectedStretch, previewPlayer);
                     individualExercisePreview.classList.remove('hidden');
                 } else {
-                    showCustomMessage(`"${selectedStretch.name}" does not have a video for preview. Please select another exercise or a routine mode.`);
+                    console.error(`"${selectedStretch.name}" does not have a video for preview. Please select another exercise or a routine mode.`);
                     individualExercisePreview.classList.add('hidden');
                     exerciseSelect.value = ""; // Reset dropdown if no video
                     IS_INDIVIDUAL_PREVIEW_MODE = false;
@@ -878,7 +833,7 @@
                 startRoutine();
             });
 
-            startRoutineFromSummaryBtn.addEventListener('click', proceedToFirstStretch); // Re-added
+            // Removed startRoutineFromSummaryBtn.addEventListener('click', proceedToFirstStretch);
 
             nextPageBtn.addEventListener('click', () => {
                 welcomePage1.classList.add('hidden');
@@ -909,7 +864,7 @@
                     individualExercisePreview.classList.add('hidden');
                     IS_INDIVIDUAL_PREVIEW_MODE = false;
                     if (isPreviewPlayerReady) previewPlayer.stopVideo();
-                    // No direct UI update here, will happen when transitioning to page 2 or if individual exercise is selected
+                    // No direct UI update here, will happen when transitioning to page 2 or if an individual exercise is selected
                 });
             });
 
@@ -930,7 +885,7 @@
                     individualExercisePreview.classList.add('hidden');
                     IS_INDIVIDUAL_PREVIEW_MODE = false;
                     if (isPreviewPlayerReady) previewPlayer.stopVideo();
-                    // No direct UI update here, will happen when transitioning to page 2 or if individual exercise is selected
+                    // No direct UI update here, will happen when transitioning to page 2 or if an individual exercise is selected
                 });
             });
 
